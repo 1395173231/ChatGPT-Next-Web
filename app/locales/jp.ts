@@ -168,6 +168,9 @@ const jp: LocaleType = {
       Title: "トピックの新鮮度 (presence_penalty)",
       SubTitle: "値が大きいほど、新しいトピックへの展開が可能になります。",
     },
+    Github: {
+      OriginLink: "プロジェクト作成者のGithubリンク",
+    },
   },
   Store: {
     DefaultTopic: "新しいチャット",
@@ -236,6 +239,9 @@ const jp: LocaleType = {
     Close: "关闭",
     Create: "新建",
     Edit: "编辑",
+  },
+  Sidebar: {
+    SubTitle: "最简单的ChatGPT使用方式",
   },
 };
 

@@ -9,6 +9,7 @@ import CopyIcon from "../icons/copy.svg";
 import ClearIcon from "../icons/clear.svg";
 import EditIcon from "../icons/edit.svg";
 import EyeIcon from "../icons/eye.svg";
+import GithubIcon from "../icons/github.svg";
 import { Input, List, ListItem, Modal, PasswordInput, Popover } from "./ui-lib";
 import { ModelConfigList } from "./model-config";
 
@@ -25,7 +26,7 @@ import {
 import Locale, { AllLangs, changeLang, getLang } from "../locales";
 import { copyToClipboard } from "../utils";
 import Link from "next/link";
-import { Path, UPDATE_URL } from "../constant";
+import { Path, REPO_URL, UPDATE_URL } from "../constant";
 import { Prompt, SearchService, usePromptStore } from "../store/prompt";
 import { ErrorBoundary } from "./error";
 import { InputRange } from "./input-range";
@@ -570,6 +571,19 @@ export function Settings() {
               config.update((config) => (config.modelConfig = modelConfig));
             }}
           />
+        </List>
+
+        <List>
+          <ListItem
+            title={Locale.Settings.Github.OriginLink}
+            subTitle={REPO_URL}
+          >
+            <IconButton
+              icon={<GithubIcon />}
+              // text={Locale.Settings.Github.toLink}
+              onClick={() => window.open(REPO_URL, "target")}
+            />
+          </ListItem>
         </List>
 
         {shouldShowPromptModal && (

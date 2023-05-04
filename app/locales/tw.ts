@@ -162,6 +162,9 @@ const tw: LocaleType = {
       Title: "話題新穎度 (presence_penalty)",
       SubTitle: "值越大，越有可能擴展到新話題",
     },
+    Github: {
+      OriginLink: "項目作者 Github 連結",
+    },
   },
   Store: {
     DefaultTopic: "新的對話",
@@ -228,6 +231,9 @@ const tw: LocaleType = {
     Close: "关闭",
     Create: "新建",
     Edit: "编辑",
+  },
+  Sidebar: {
+    SubTitle: "这是最简单的使用ChatGPT方式",
   },
 };
 

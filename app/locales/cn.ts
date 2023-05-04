@@ -164,6 +164,9 @@ const cn = {
       Title: "话题新鲜度 (presence_penalty)",
       SubTitle: "值越大，越有可能扩展到新话题",
     },
+    Github: {
+      OriginLink: "项目作者Github链接",
+    },
   },
   Store: {
     DefaultTopic: "新的聊天",
@@ -233,6 +236,9 @@ const cn = {
     Close: "关闭",
     Create: "新建",
     Edit: "编辑",
+  },
+  Sidebar: {
+    SubTitle: "最简单的ChatGPT使用方式",
   },
 };
 

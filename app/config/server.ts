@@ -8,6 +8,8 @@ declare global {
       PROXY_URL?: string;
       VERCEL?: string;
       HIDE_USER_API_KEY?: string; // disable user's api key input
+      KV_UPSTASH_URL?: string;
+      KV_UPSTASH_TOKEN?: string;
     }
   }
 }
@@ -40,5 +42,9 @@ export const getServerSideConfig = () => {
     proxyUrl: process.env.PROXY_URL,
     isVercel: !!process.env.VERCEL,
     hideUserApiKey: !!process.env.HIDE_USER_API_KEY,
+    freeLimit: process.env.FREE_LIMIT ?? "10/30s",
+    paidLimit: process.env.PAID_LIMIT ?? "10/10s",
+    kvUrl: process.env.KV_REST_API_URL,
+    kvToken: process.env.KV_REST_API_TOKEN,
   };
 };

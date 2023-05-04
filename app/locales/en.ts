@@ -166,6 +166,9 @@ const en: LocaleType = {
       SubTitle:
         "A larger value increases the likelihood to talk about new topics",
     },
+    Github: {
+      OriginLink: "Project author's Github link",
+    },
   },
   Store: {
     DefaultTopic: "New Conversation",
@@ -236,6 +239,9 @@ const en: LocaleType = {
     Close: "Close",
     Create: "Create",
     Edit: "Edit",
+  },
+  Sidebar: {
+    SubTitle: "The easiest and simplest way to use ChatGPT",
   },
 };
 

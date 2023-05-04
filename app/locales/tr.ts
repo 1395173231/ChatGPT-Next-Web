@@ -168,6 +168,9 @@ const tr: LocaleType = {
       SubTitle:
         "Daha büyük bir değer, yeni konular hakkında konuşma olasılığını artırır",
     },
+    Github: {
+      OriginLink: "roje yazarının Github bağlantısı",
+    },
   },
   Store: {
     DefaultTopic: "Yeni Konuşma",
@@ -238,6 +241,9 @@ const tr: LocaleType = {
     Close: "Close",
     Create: "Create",
     Edit: "Edit",
+  },
+  Sidebar: {
+    SubTitle: "The easiest and simplest way to use ChatGPT",
   },
 };
 
