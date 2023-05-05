@@ -34,7 +34,6 @@ const CHATGPT_NEXT_WEB_CACHE = "chatgpt-next-web-cache";
             // new RegExp(`${location.origin}/themes`, "i"), //主题目录
             /\/\/(unpkg\.com|npm\.elemecdn\.com|cdn\.jsdelivr\.net)\/.*/i, //公共cdn网站
             /(css|js|json)$.*/i,
-            /(chat|\/)$.*/i
         ]
 
         //对这里面的请求只走缓存
@@ -46,6 +45,8 @@ const CHATGPT_NEXT_WEB_CACHE = "chatgpt-next-web-cache";
 
         // 不缓存，不走cdn
         const notCacheList = [
+            /(chat|\/)$.*/i,
+            new RegExp(`${location.origin}/`, "i"),
             // new RegExp(`${location.origin}/(admin|api)`, "i"), //管理后台
         ]
 
