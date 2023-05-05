@@ -33,6 +33,8 @@ const tw: LocaleType = {
     Config: {
       Reset: "重置默认",
       SaveAs: "另存为面具",
+      EnableSearch: "启用网络搜索",
+      CloseSearch: "关闭网络搜索",
     },
   },
   Export: {

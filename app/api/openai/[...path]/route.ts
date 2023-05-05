@@ -1,6 +1,7 @@
 import { createParser } from "eventsource-parser";
-import { NextRequest, NextResponse } from "next/server";
+import { NextFetchEvent, NextRequest, NextResponse } from "next/server";
 import { auth } from "../../auth";
+import { search } from "../../search";
 import { requestOpenai } from "../../common";
 
 async function createStream(res: Response) {
@@ -56,6 +57,13 @@ async function handle(
       status: 401,
     });
   }
+  const webSearchResult = await search(req);
+  if (webSearchResult.error) {
+    return NextResponse.json(webSearchResult.message, {
+      status: 200,
+    });
+  }
+  req = webSearchResult.req;
 
   try {
     const api = await requestOpenai(req);

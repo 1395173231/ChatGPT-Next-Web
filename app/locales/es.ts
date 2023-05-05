@@ -34,6 +34,8 @@ const es: LocaleType = {
     Config: {
       Reset: "Reset to Default",
       SaveAs: "Save as Mask",
+      EnableSearch: "Enable web search",
+      CloseSearch: "Close web search",
     },
   },
   Export: {

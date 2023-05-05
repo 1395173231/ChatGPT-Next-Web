@@ -46,5 +46,6 @@ export const getServerSideConfig = () => {
     paidLimit: process.env.PAID_LIMIT ?? "10/10s",
     kvUrl: process.env.KV_REST_API_URL,
     kvToken: process.env.KV_REST_API_TOKEN,
+    prefixProxy: process.env.GLOBAL_PREFIX_PROXY,
   };
 };
