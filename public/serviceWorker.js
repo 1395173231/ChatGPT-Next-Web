@@ -13,7 +13,7 @@ const CHATGPT_NEXT_WEB_CACHE = "chatgpt-next-web-cache";
             console.log('uninstall service worker.')
             navigator.serviceWorker.getRegistrations().then(function (registrations) {
                 for (let registration of registrations) {
-                    registration.active && registration.active.scriptURL && registration.active.scriptURL.indexOf("/sw.min.js") !== -1 && registration.unregister()
+                    registration.active && registration.active.scriptURL && registration.active.scriptURL.indexOf("/serviceWorker.js") !== -1 && registration.unregister()
                 }
             })
             window.caches && caches.keys && caches.keys().then(function (keys) {

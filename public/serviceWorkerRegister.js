@@ -5,15 +5,5 @@ if ('serviceWorker' in navigator) {
     }, function (err) {
       console.error('ServiceWorker registration failed: ', err);
     });
-
-    let refreshing = false
-    navigator.serviceWorker.addEventListener('controllerchange', () => {
-      if (refreshing) {
-        return
-      }
-      refreshing = true;
-      window.location.reload();
-    });
-
   });
 }
