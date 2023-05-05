@@ -1,6 +1,6 @@
 {
-    "name": "ChatGPT Next Web",
-    "short_name": "ChatGPT",
+    "name": "EasyChat",
+    "short_name": "Easy to use ChatGPT",
     "icons": [
       {
         "src": "/android-chrome-192x192.png",
@@ -17,5 +17,4 @@
     "theme_color": "#ffffff",
     "background_color": "#ffffff",
     "display": "standalone"
-  }
-  
+}
