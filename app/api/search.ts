@@ -113,7 +113,12 @@ export async function search(req: NextRequest) {
       }
       display_append_str = "<ol>\n\n" + display_append.join("") + "</ol>";
       let input = WEBSEARCH_PTOMPT_TEMPLATE.replace("{query}", lastContent)
-        .replace("{web_results}", reference_results.join("\n\n"))
+        .replace(
+          "{web_results}",
+          reference_results.length > 0
+            ? reference_results.join("\n\n")
+            : `no web result`,
+        )
         .replace("{reply_language}", reply_language)
         .replace(
           "{current_date}",
@@ -126,6 +131,7 @@ export async function search(req: NextRequest) {
           break; // 找到并修改后跳出循环
         }
       }
+      console.log(`${input}`);
       let modifyReq = new NextRequest(req.url, {
         method: req.method,
         headers: req.headers,
@@ -143,13 +149,14 @@ export async function search(req: NextRequest) {
     } catch (e) {
       return {
         error: true,
-        message: e,
+        message: `search error`,
         req: req,
       };
     }
+  } else {
+    return {
+      error: false,
+      req: req,
+    };
   }
-  return {
-    error: false,
-    req: req,
-  };
 }

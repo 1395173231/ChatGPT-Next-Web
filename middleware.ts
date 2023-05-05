@@ -83,7 +83,7 @@ const NextResponseText = (body: any) => {
 }
 
 export async function middleware(req: NextRequest, event: NextFetchEvent) {
-    await init_mint()
+    event.waitUntil(init_mint())
     const body = req.body && await getObjectFromRequestBodyStream(req.body);
     const ip = getIP(req)
     let ratelimit = getRatelimit();
