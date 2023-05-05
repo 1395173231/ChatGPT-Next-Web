@@ -17,16 +17,6 @@ function getIP(req: NextRequest) {
   return ip;
 }
 
-function parseApiKey(bearToken: string) {
-  const token = bearToken.trim().replaceAll("Bearer ", "").trim();
-  const isOpenAiKey = token.startsWith("sk-");
-
-  return {
-    accessCode: isOpenAiKey ? "" : token,
-    apiKey: isOpenAiKey ? token : "",
-  };
-}
-
 async function getObjectFromRequestBodyStream(
   body: ReadableStream<Uint8Array>,
 ) {
