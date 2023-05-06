@@ -26,7 +26,7 @@ import {
 import Locale, { AllLangs, changeLang, getLang } from "../locales";
 import { copyToClipboard } from "../utils";
 import Link from "next/link";
-import { Path, REPO_URL, UPDATE_URL } from "../constant";
+import { MODIFY_REPO_URL, Path, REPO_URL, UPDATE_URL } from "../constant";
 import { Prompt, SearchService, usePromptStore } from "../store/prompt";
 import { ErrorBoundary } from "./error";
 import { InputRange } from "./input-range";
@@ -582,6 +582,16 @@ export function Settings() {
               icon={<GithubIcon />}
               // text={Locale.Settings.Github.toLink}
               onClick={() => window.open(REPO_URL, "target")}
+            />
+          </ListItem>
+          <ListItem
+            title={Locale.Settings.Github.ModifyLink}
+            subTitle={MODIFY_REPO_URL}
+          >
+            <IconButton
+              icon={<GithubIcon />}
+              // text={Locale.Settings.Github.toLink}
+              onClick={() => window.open(MODIFY_REPO_URL, "target")}
             />
           </ListItem>
         </List>

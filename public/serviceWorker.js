@@ -25,7 +25,7 @@ const CHATGPT_NEXT_WEB_CACHE = "chatgpt-next-web-cache";
         }
     } else {
         //可以进行版本修改，删除缓存
-        const version = "1.0.0";
+        const version = "1.0.1";
         const cacheName = `${CHATGPT_NEXT_WEB_CACHE}-${version}`;
         const offLine = new URLSearchParams(location.href.split("?")[1]).get("offLine")
 
@@ -33,7 +33,6 @@ const CHATGPT_NEXT_WEB_CACHE = "chatgpt-next-web-cache";
         const cdnAndCacheList = [
             // new RegExp(`${location.origin}/themes`, "i"), //主题目录
             /\/\/(unpkg\.com|npm\.elemecdn\.com|cdn\.jsdelivr\.net)\/.*/i, //公共cdn网站
-            /(css|js|json)$.*/i,
         ]
 
         //对这里面的请求只走缓存
@@ -41,6 +40,7 @@ const CHATGPT_NEXT_WEB_CACHE = "chatgpt-next-web-cache";
             // new RegExp(`${location.origin}/upload`, "i"), //图片等附件目录
             /\/\/(cdn.jsdelivr.net\/gh|fonts\.googleapis\.com).*/i,  //gh目前没有可用cdn源
             /(png|jpg|jpeg|svg|ico|woff2).*/i,
+            /(css|js|json)$.*/i,
         ];
 
         // 不缓存，不走cdn

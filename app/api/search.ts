@@ -57,7 +57,7 @@ const DdgSearch = async (
       MAX_API_RESULTS = 200,
       page = 1;
     let payload = {
-      q: encodeURIComponent(searchQuery),
+      q: searchQuery,
       l: region,
       p: safesearch_base["On"],
       s: Math.max(PAGINATION_STEP * (page - 1), 0),
@@ -99,11 +99,9 @@ export async function search(req: NextRequest) {
           if (!row["n"]) {
             let body = row["a"];
             if (body) {
-              let domain_name = row["u"];
+              let domain_name = row["i"];
               reference_results.push([body, row["u"]]);
-              display_append.push(
-                `<li><a href=\"{result['href']}\" target=\"_blank\">${domain_name}</a></li>\n`,
-              );
+              display_append.push(`> - [${domain_name}](${row["u"]})\n`);
               if (reference_results.length > 5) {
                 break;
               }
@@ -111,7 +109,10 @@ export async function search(req: NextRequest) {
           }
         }
       }
-      display_append_str = "<ol>\n\n" + display_append.join("") + "</ol>";
+      display_append_str =
+        "\n>搜索结果:\n" +
+        display_append.join("") +
+        ">**搜索数据来源互联网,本站不保证其内容可靠性,安全性及合法性,请谨慎访问**";
       let input = WEBSEARCH_PTOMPT_TEMPLATE.replace("{query}", lastContent)
         .replace(
           "{web_results}",

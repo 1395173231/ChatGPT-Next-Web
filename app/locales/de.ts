@@ -172,6 +172,7 @@ const de: LocaleType = {
     },
     Github: {
       OriginLink: "Github-Link des Projekt-Autors",
+      ModifyLink: "Github link for this site",
     },
   },
   Store: {

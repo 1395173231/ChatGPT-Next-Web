@@ -169,7 +169,8 @@ const en: LocaleType = {
         "A larger value increases the likelihood to talk about new topics",
     },
     Github: {
-      OriginLink: "Project author's Github link",
+      OriginLink: "Github-Link des Projekt-Autors",
+      ModifyLink: "Github link for this site",
     },
   },
   Store: {

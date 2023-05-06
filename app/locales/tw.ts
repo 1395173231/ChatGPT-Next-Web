@@ -165,7 +165,8 @@ const tw: LocaleType = {
       SubTitle: "值越大，越有可能擴展到新話題",
     },
     Github: {
-      OriginLink: "項目作者 Github 連結",
+      OriginLink: "原项目作者Github链接",
+      ModifyLink: "此网站Github链接",
     },
   },
   Store: {

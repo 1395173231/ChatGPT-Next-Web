@@ -167,7 +167,8 @@ const cn = {
       SubTitle: "值越大，越有可能扩展到新话题",
     },
     Github: {
-      OriginLink: "项目作者Github链接",
+      OriginLink: "原项目作者Github链接",
+      ModifyLink: "此网站Github链接",
     },
   },
   Store: {

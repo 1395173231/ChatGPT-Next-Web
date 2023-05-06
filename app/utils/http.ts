@@ -27,7 +27,10 @@ const request = async ({
     }
 
     if (body) {
-      url += `&${new URLSearchParams(body).toString()}`;
+      if (!url.includes("&")) {
+        url += "&";
+      }
+      url += `${new URLSearchParams(body).toString()}`;
     }
 
     if (serverConfig.prefixProxy) {
@@ -36,6 +39,7 @@ const request = async ({
         "x-cors-headers": headers ? JSON.stringify(headers) : undefined,
       };
     }
+    console.log(`new [${url}]`);
     return await fetch(url, {
       method,
       headers: {

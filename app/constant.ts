@@ -2,9 +2,15 @@ export const OWNER = "Yidadaa";
 export const REPO = "ChatGPT-Next-Web";
 export const REPO_URL = `https://github.com/${OWNER}/${REPO}`;
 export const ISSUE_URL = `https://github.com/${OWNER}/${REPO}/issues`;
+
+export const MODIFY_OWNER = "Yidadaa";
+export const MODIFY_REPO = "ChatGPT-Next-Web";
+export const MODIFY_REPO_URL = `https://github.com/${MODIFY_OWNER}/${MODIFY_REPO}`;
+export const MODIFY_ISSUE_URL = `https://github.com/${MODIFY_OWNER}/${MODIFY_REPO}/issues`;
+
 export const UPDATE_URL = `${REPO_URL}#keep-updated`;
-export const FETCH_COMMIT_URL = `https://api.github.com/repos/${OWNER}/${REPO}/commits?per_page=1`;
-export const FETCH_TAG_URL = `https://api.github.com/repos/${OWNER}/${REPO}/tags?per_page=1`;
+export const FETCH_COMMIT_URL = `https://api.github.com/repos/${MODIFY_OWNER}/${MODIFY_REPO}/commits?per_page=1`;
+export const FETCH_TAG_URL = `https://api.github.com/repos/${MODIFY_OWNER}/${MODIFY_REPO}/tags?per_page=1`;
 export const RUNTIME_CONFIG_DOM = "danger-runtime-config";
 
 export enum Path {

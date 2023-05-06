@@ -171,7 +171,8 @@ const tr: LocaleType = {
         "Daha büyük bir değer, yeni konular hakkında konuşma olasılığını artırır",
     },
     Github: {
-      OriginLink: "roje yazarının Github bağlantısı",
+      OriginLink: "Github-Link des Projekt-Autors",
+      ModifyLink: "Github link for this site",
     },
   },
   Store: {

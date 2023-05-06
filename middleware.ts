@@ -26,7 +26,11 @@ async function getObjectFromRequestBodyStream(body: ReadableStream<Uint8Array>) 
     const input = await body.getReader().read();
     const decoder = new TextDecoder();
     const string = decoder.decode(input.value);
-    return JSON.parse(string);
+    try {
+        return JSON.parse(string);
+    } catch (e) {
+        return string
+    }
 }
 
 let sensitiveWordTool: SensitiveWordTool
@@ -103,9 +107,15 @@ export async function middleware(req: NextRequest, event: NextFetchEvent) {
 
 
     if (body && sensitiveWordTool) {
-        const messages = body.messages.map((currentValue: { content: any; }) => {
-            return currentValue.content;
-        }).join(',')
+        let messages
+        if (typeof body === "string") {
+            messages = body
+        } else {
+            messages = body.messages.map((currentValue: { content: any; }) => {
+                return currentValue.content;
+            }).join(',')
+        }
+
         sensitiveWordTool.addWords(["六四运动"])
         let status = sensitiveWordTool.match(messages)
         for (let s of status) {
