@@ -30,9 +30,10 @@ async function getObjectFromRequestBodyStream(body: ReadableStream<Uint8Array>) 
 }
 
 let sensitiveWordTool: SensitiveWordTool
+let redis: Redis
 
 function getRedisClient() {
-    let redis: Redis
+    if (redis) return redis
     if (serverConfig.kvUrl && serverConfig.kvToken) {
         redis = new Redis({
             url: serverConfig.kvUrl,
@@ -47,9 +48,12 @@ function getRedisClient() {
 type Unit = "ms" | "s" | "m" | "h" | "d";
 type Duration = `${number} ${Unit}` | `${number}${Unit}`;
 
+let limiter: { free: Ratelimit; paid: Ratelimit; }
+
 function getRatelimit() {
     let redis = getRedisClient()
-    return {
+    if (limiter) return limiter
+    limiter = {
         free: new Ratelimit({
             redis,
             analytics: true,
@@ -63,8 +67,9 @@ function getRatelimit() {
             limiter: Ratelimit.slidingWindow(Number(serverConfig.paidLimit.split('/')[0]), <Duration>serverConfig.paidLimit.split('/')[1]),
         })
     }
-}
+    return limiter
 
+}
 
 
 async function init_mint() {
