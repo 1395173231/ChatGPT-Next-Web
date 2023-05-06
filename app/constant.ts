@@ -3,7 +3,7 @@ export const REPO = "ChatGPT-Next-Web";
 export const REPO_URL = `https://github.com/${OWNER}/${REPO}`;
 export const ISSUE_URL = `https://github.com/${OWNER}/${REPO}/issues`;
 
-export const MODIFY_OWNER = "Yidadaa";
+export const MODIFY_OWNER = "1395173231";
 export const MODIFY_REPO = "ChatGPT-Next-Web";
 export const MODIFY_REPO_URL = `https://github.com/${MODIFY_OWNER}/${MODIFY_REPO}`;
 export const MODIFY_ISSUE_URL = `https://github.com/${MODIFY_OWNER}/${MODIFY_REPO}/issues`;
