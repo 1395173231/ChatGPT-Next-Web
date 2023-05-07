@@ -237,7 +237,7 @@ const cn = {
     Edit: "编辑",
   },
   Sidebar: {
-    SubTitle: "Powered by Lanny Chan",
+    SubTitle: "Powered by Lanny Chan.",
   },
 };
 
