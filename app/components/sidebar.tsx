@@ -96,7 +96,7 @@ export function SideBar(props: { className?: string }) {
       }`}
     >
       <div className={styles["sidebar-header"]}>
-        <div className={styles["sidebar-title"]}>EasyChat</div>
+        <div className={styles["sidebar-title"]}>高翊GPT plus</div>
         <div className={styles["sidebar-sub-title"]}>
           {Locale.Sidebar.SubTitle}
         </div>
