@@ -8,7 +8,7 @@ const buildConfig = getBuildConfig();
 
 export const metadata = {
   title: "高翊GPT plus",
-  description: "Help you easily use ChatGPT.",
+  description: "全能的人工智能助理plus",
   appleWebApp: {
     title: "高翊GPT plus",
     statusBarStyle: "default",
