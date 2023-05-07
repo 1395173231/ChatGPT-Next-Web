@@ -170,10 +170,6 @@ const tr: LocaleType = {
       SubTitle:
         "Daha büyük bir değer, yeni konular hakkında konuşma olasılığını artırır",
     },
-    Github: {
-      OriginLink: "Github-Link des Projekt-Autors",
-      ModifyLink: "Github link for this site",
-    },
   },
   Store: {
     DefaultTopic: "Yeni Konuşma",
