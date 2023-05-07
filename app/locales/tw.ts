@@ -164,10 +164,6 @@ const tw: LocaleType = {
       Title: "話題新穎度 (presence_penalty)",
       SubTitle: "值越大，越有可能擴展到新話題",
     },
-    Github: {
-      OriginLink: "原项目作者Github链接",
-      ModifyLink: "此网站Github链接",
-    },
   },
   Store: {
     DefaultTopic: "新的對話",
