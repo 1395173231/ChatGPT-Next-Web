@@ -33,8 +33,8 @@ const cn = {
     Config: {
       Reset: "重置默认",
       SaveAs: "另存为面具",
-      EnableSearch: "启用网络搜索",
-      CloseSearch: "关闭网络搜索",
+      EnableSearch: "启用网络搜索(不可连续对话)",
+      CloseSearch: "关闭网络搜索(可以连续对话)",
     },
   },
   Export: {
@@ -93,8 +93,8 @@ const cn = {
       IsLatest: "已是最新版本",
       CheckUpdate: "检查更新",
       IsChecking: "正在检查更新...",
-      FoundUpdate: (x: string) => `发现新版本：${x}`,
-      GoToUpdate: "前往更新",
+      FoundUpdate: (x: string) => `${x}`,
+      GoToUpdate: "",
     },
     SendKey: "发送键",
     Theme: "主题",
@@ -165,10 +165,6 @@ const cn = {
     PresencePenlty: {
       Title: "话题新鲜度 (presence_penalty)",
       SubTitle: "值越大，越有可能扩展到新话题",
-    },
-    Github: {
-      OriginLink: "原项目作者Github链接",
-      ModifyLink: "此网站Github链接",
     },
   },
   Store: {
@@ -241,7 +237,7 @@ const cn = {
     Edit: "编辑",
   },
   Sidebar: {
-    SubTitle: "最简单的ChatGPT使用方式",
+    SubTitle: "全能的人工智能助理",
   },
 };
 
