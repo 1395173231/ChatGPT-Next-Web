@@ -237,7 +237,7 @@ const cn = {
     Edit: "编辑",
   },
   Sidebar: {
-    SubTitle: "全能的人工智能助理",
+    SubTitle: "Powered by Lanny Chan",
   },
 };
 
