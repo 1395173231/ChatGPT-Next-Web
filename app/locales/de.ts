@@ -245,7 +245,7 @@ const de: LocaleType = {
   },
 
   Sidebar: {
-    SubTitle: "The easiest and simplest way to use ChatGPT",
+    SubTitle: "Powered by Lanny Chan.",
   },
 };
 
