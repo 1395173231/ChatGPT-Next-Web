@@ -168,10 +168,6 @@ const es: LocaleType = {
       SubTitle:
         "Un valor mayor aumenta la probabilidad de hablar sobre nuevos temas",
     },
-    Github: {
-      OriginLink: "Github-Link des Projekt-Autors",
-      ModifyLink: "Github link for this site",
-    },
   },
   Store: {
     DefaultTopic: "Nueva conversación",
