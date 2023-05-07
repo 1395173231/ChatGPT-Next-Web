@@ -93,7 +93,7 @@ const cn = {
       IsLatest: "已是最新版本",
       CheckUpdate: "检查更新",
       IsChecking: "正在检查更新...",
-      FoundUpdate: (x: string) => `${x}`,
+      FoundUpdate: (x: string) => `仓库版本：${x}`,
       GoToUpdate: "",
     },
     SendKey: "发送键",
