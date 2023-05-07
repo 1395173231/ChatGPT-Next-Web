@@ -240,7 +240,7 @@ const en: LocaleType = {
     Edit: "Edit",
   },
   Sidebar: {
-    SubTitle: "The easiest and simplest way to use ChatGPT",
+    SubTitle: "Powered by Lanny Chan.",
   },
 };
 
