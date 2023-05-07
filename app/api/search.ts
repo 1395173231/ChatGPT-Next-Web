@@ -110,7 +110,7 @@ export async function search(req: NextRequest) {
         }
       }
       display_append_str =
-        "\n>搜索结果:\n" +
+        "\n>参考资料:\n" +
         display_append.join("") +
         "";
       let input = WEBSEARCH_PTOMPT_TEMPLATE.replace("{query}", lastContent)
