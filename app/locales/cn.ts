@@ -33,8 +33,8 @@ const cn = {
     Config: {
       Reset: "重置默认",
       SaveAs: "另存为面具",
-      EnableSearch: "启用网络搜索",
-      CloseSearch: "关闭网络搜索",
+      EnableSearch: "启用网络搜索(不可连续对话)",
+      CloseSearch: "关闭网络搜索(可以连续对话)",
     },
   },
   Export: {
@@ -93,8 +93,8 @@ const cn = {
       IsLatest: "已是最新版本",
       CheckUpdate: "检查更新",
       IsChecking: "正在检查更新...",
-      FoundUpdate: (x: string) => `发现新版本：${x}`,
-      GoToUpdate: "前往更新",
+      FoundUpdate: (x: string) => `仓库版本：${x}`,
+      GoToUpdate: "",
     },
     SendKey: "发送键",
     Theme: "主题",
@@ -135,7 +135,7 @@ const cn = {
     },
     Token: {
       Title: "API Key",
-      SubTitle: "使用自己的 Key 可绕过密码访问限制",
+      SubTitle: "使用自己的API Key",
       Placeholder: "OpenAI API Key",
     },
 
@@ -166,14 +166,10 @@ const cn = {
       Title: "话题新鲜度 (presence_penalty)",
       SubTitle: "值越大，越有可能扩展到新话题",
     },
-    Github: {
-      OriginLink: "原项目作者Github链接",
-      ModifyLink: "此网站Github链接",
-    },
   },
   Store: {
     DefaultTopic: "新的聊天",
-    BotHello: "有什么可以帮你的吗",
+    BotHello: "你好，我是高翊GPT，有什么可以帮你的吗？",
     Error: "出错了，稍后重试吧",
     Prompt: {
       History: (content: string) =>
@@ -229,7 +225,7 @@ const cn = {
     NotShow: "不再展示",
     ConfirmNoShow: "确认禁用？禁用后可以随时在设置中重新启用。",
     Title: "挑选一个面具",
-    SubTitle: "现在开始，与面具背后的灵魂思维碰撞",
+    SubTitle: "为GPT预设身份，与面具背后的灵魂思维碰撞",
     More: "查看全部",
   },
 
@@ -241,7 +237,7 @@ const cn = {
     Edit: "编辑",
   },
   Sidebar: {
-    SubTitle: "最简单的ChatGPT使用方式",
+    SubTitle: "Powered by Lanny Chan.",
   },
 };
 

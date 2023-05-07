@@ -168,10 +168,6 @@ const en: LocaleType = {
       SubTitle:
         "A larger value increases the likelihood to talk about new topics",
     },
-    Github: {
-      OriginLink: "Github-Link des Projekt-Autors",
-      ModifyLink: "Github link for this site",
-    },
   },
   Store: {
     DefaultTopic: "New Conversation",
@@ -244,7 +240,7 @@ const en: LocaleType = {
     Edit: "Edit",
   },
   Sidebar: {
-    SubTitle: "The easiest and simplest way to use ChatGPT",
+    SubTitle: "Powered by Lanny Chan.",
   },
 };
 

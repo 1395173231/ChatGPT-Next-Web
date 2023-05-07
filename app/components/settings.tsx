@@ -574,29 +574,6 @@ export function Settings() {
           />
         </List>
 
-        <List>
-          <ListItem
-            title={Locale.Settings.Github.OriginLink}
-            subTitle={REPO_URL}
-          >
-            <IconButton
-              icon={<GithubIcon />}
-              // text={Locale.Settings.Github.toLink}
-              onClick={() => window.open(REPO_URL, "target")}
-            />
-          </ListItem>
-          <ListItem
-            title={Locale.Settings.Github.ModifyLink}
-            subTitle={MODIFY_REPO_URL}
-          >
-            <IconButton
-              icon={<GithubIcon />}
-              // text={Locale.Settings.Github.toLink}
-              onClick={() => window.open(MODIFY_REPO_URL, "target")}
-            />
-          </ListItem>
-        </List>
-
         {shouldShowPromptModal && (
           <UserPromptModal onClose={() => setShowPromptModal(false)} />
         )}
