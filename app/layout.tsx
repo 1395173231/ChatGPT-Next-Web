@@ -7,10 +7,10 @@ import { getBuildConfig } from "./config/build";
 const buildConfig = getBuildConfig();
 
 export const metadata = {
-  title: "高翊GPT plus",
-  description: "全能的人工智能助理plus",
+  title: "高翊GPT",
+  description: "全能的人工智能助理",
   appleWebApp: {
-    title: "高翊GPT plus",
+    title: "高翊GPT",
     statusBarStyle: "default",
   },
   themeColor: "#fafafa",
