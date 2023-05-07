@@ -170,10 +170,6 @@ const jp: LocaleType = {
       Title: "トピックの新鮮度 (presence_penalty)",
       SubTitle: "値が大きいほど、新しいトピックへの展開が可能になります。",
     },
-    Github: {
-      OriginLink: "原项目作者Github链接",
-      ModifyLink: "此网站Github链接",
-    },
   },
   Store: {
     DefaultTopic: "新しいチャット",
