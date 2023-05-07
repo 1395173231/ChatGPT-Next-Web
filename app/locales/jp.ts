@@ -240,7 +240,7 @@ const jp: LocaleType = {
     Edit: "编辑",
   },
   Sidebar: {
-    SubTitle: "最简单的ChatGPT使用方式",
+    SubTitle: "Powered by Lanny Chan.",
   },
 };
 
