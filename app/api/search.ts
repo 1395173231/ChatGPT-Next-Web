@@ -112,7 +112,7 @@ export async function search(req: NextRequest) {
       display_append_str =
         "\n>搜索结果:\n" +
         display_append.join("") +
-        ">**搜索数据来源互联网,本站不保证其内容可靠性,安全性及合法性,请谨慎访问**";
+        "";
       let input = WEBSEARCH_PTOMPT_TEMPLATE.replace("{query}", lastContent)
         .replace(
           "{web_results}",
