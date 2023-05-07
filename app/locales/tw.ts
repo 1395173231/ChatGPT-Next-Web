@@ -232,7 +232,7 @@ const tw: LocaleType = {
     Edit: "编辑",
   },
   Sidebar: {
-    SubTitle: "这是最简单的使用ChatGPT方式",
+    SubTitle: "Powered by Lanny Chan.",
   },
 };
 
