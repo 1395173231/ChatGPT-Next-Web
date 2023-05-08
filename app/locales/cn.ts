@@ -80,6 +80,7 @@ const cn = {
         tr: "Türkçe",
         jp: "日本語",
         de: "Deutsch",
+        vi: "Vietnamese",
       },
     },
     Avatar: "头像",
