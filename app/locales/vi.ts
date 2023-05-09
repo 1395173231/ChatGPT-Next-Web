@@ -236,6 +236,9 @@ const vi: LocaleType = {
     Create: "Tạo",
     Edit: "Chỉnh sửa",
   },
+  Sidebar: {
+    SubTitle: "Powered by Lanny Chan.",
+  },
 };
 
 export default vi;
