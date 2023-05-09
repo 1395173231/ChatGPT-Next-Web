@@ -32,12 +32,10 @@ import {
   SubmitKey,
   useChatStore,
   BOT_HELLO,
-  ROLES,
   createMessage,
   useAccessStore,
   Theme,
   useAppConfig,
-  ModelConfig,
   DEFAULT_TOPIC,
 } from "../store";
 
@@ -64,11 +62,8 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { Path } from "../constant";
 import { Avatar } from "./emoji";
 import { MaskAvatar, MaskConfig } from "./mask";
-import {
-  DEFAULT_MASK_AVATAR,
-  DEFAULT_MASK_ID,
-  useMaskStore,
-} from "../store/mask";
+import { useMaskStore } from "../store/mask";
+import { useCommand } from "../command";
 
 const Markdown = dynamic(async () => (await import("./markdown")).Markdown, {
   loading: () => <LoadingIcon />,
@@ -506,8 +501,7 @@ export function Chat() {
     }
   };
 
-  // submit user input
-  const onUserSubmit = () => {
+  const doSubmit = (userInput: string) => {
     if (userInput.trim() === "") return;
     setIsLoading(true);
     chatStore.onUserInput(userInput).then(() => setIsLoading(false));
@@ -532,7 +526,7 @@ export function Chat() {
       return;
     }
     if (shouldSubmit(e)) {
-      onUserSubmit();
+      doSubmit(userInput);
       e.preventDefault();
     }
   };
@@ -645,6 +639,13 @@ export function Chat() {
   const location = useLocation();
   const isChat = location.pathname === Path.Chat;
   const autoFocus = !isMobileScreen || isChat; // only focus in chat page
+
+  useCommand({
+    fill: setUserInput,
+    submit: (text) => {
+      doSubmit(text);
+    },
+  });
 
   return (
     <div className={styles.chat} key={session.id}>
@@ -844,7 +845,7 @@ export function Chat() {
             text={Locale.Chat.Send}
             className={styles["chat-input-send"]}
             type="primary"
-            onClick={onUserSubmit}
+            onClick={() => doSubmit(userInput)}
           />
         </div>
       </div>
