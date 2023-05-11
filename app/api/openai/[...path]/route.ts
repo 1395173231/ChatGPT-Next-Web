@@ -1,9 +1,10 @@
 import { createParser } from "eventsource-parser";
-import { NextRequest, NextResponse } from "next/server";
+import { NextFetchEvent, NextRequest, NextResponse } from "next/server";
 import { auth } from "../../auth";
+import { search } from "../../search";
 import { requestOpenai } from "../../common";
 
-async function createStream(res: Response) {
+async function createStream(res: Response, append: string) {
   const encoder = new TextEncoder();
   const decoder = new TextDecoder();
 
@@ -14,6 +15,8 @@ async function createStream(res: Response) {
           const data = event.data;
           // https://beta.openai.com/docs/api-reference/completions/create#completions/create-stream
           if (data === "[DONE]") {
+            const queue = encoder.encode(append);
+            controller.enqueue(queue);
             controller.close();
             return;
           }
@@ -56,6 +59,13 @@ async function handle(
       status: 401,
     });
   }
+  const { display_append, error, message, req: req1 } = await search(req);
+  if (error) {
+    return NextResponse.json(message, {
+      status: 200,
+    });
+  }
+  req = req1;
 
   try {
     const api = await requestOpenai(req);
@@ -64,7 +74,7 @@ async function handle(
 
     // streaming response
     if (contentType.includes("stream")) {
-      const stream = await createStream(api);
+      const stream = await createStream(api, display_append || "");
       const res = new Response(stream);
       res.headers.set("Content-Type", contentType);
       return res;

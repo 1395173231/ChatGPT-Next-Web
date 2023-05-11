@@ -34,6 +34,8 @@ const en: LocaleType = {
     Config: {
       Reset: "Reset to Default",
       SaveAs: "Save as Mask",
+      EnableSearch: "Enable web search",
+      CloseSearch: "Close web search",
     },
   },
   Export: {
@@ -96,7 +98,7 @@ const en: LocaleType = {
       CheckUpdate: "Check Update",
       IsChecking: "Checking update...",
       FoundUpdate: (x: string) => `Found new version: ${x}`,
-      GoToUpdate: "Update",
+      GoToUpdate: "",
     },
     SendKey: "Send Key",
     Theme: "Theme",
@@ -239,6 +241,9 @@ const en: LocaleType = {
     Close: "Close",
     Create: "Create",
     Edit: "Edit",
+  },
+  Sidebar: {
+    SubTitle: "Powered by Lanny Chan.",
   },
 };
 

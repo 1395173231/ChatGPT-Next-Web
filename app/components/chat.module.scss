@@ -22,6 +22,25 @@
       margin-right: 5px;
     }
   }
+
+  .chat-input-action-selected {
+    display: inline-flex;
+    border-radius: 20px;
+    font-size: 12px;
+    background-color: var(--second);
+    color: var(--black);
+    border: var(--border-in-light);
+    padding: 4px 10px;
+    animation: slide-in ease 0.3s;
+    box-shadow: var(--card-shadow);
+    transition: all ease 0.3s;
+    margin-bottom: 10px;
+    align-items: center;
+
+    &:not(:last-child) {
+      margin-right: 5px;
+    }
+  }
 }
 
 .prompt-toast {

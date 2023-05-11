@@ -171,6 +171,7 @@ export async function requestChatStream(
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        needSearch: String(useChatStore.getState().currentSession().needSearch), // only using streaming
         ...getHeaders(),
       },
       body: JSON.stringify(req),

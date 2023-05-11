@@ -1,5 +1,11 @@
 import { useDebouncedCallback } from "use-debounce";
-import { useState, useRef, useEffect, useLayoutEffect } from "react";
+import {
+  useState,
+  useRef,
+  useEffect,
+  useLayoutEffect,
+  CSSProperties,
+} from "react";
 
 import SendWhiteIcon from "../icons/send-white.svg";
 import BrainIcon from "../icons/brain.svg";
@@ -14,7 +20,7 @@ import MaskIcon from "../icons/mask.svg";
 import MaxIcon from "../icons/max.svg";
 import MinIcon from "../icons/min.svg";
 import ResetIcon from "../icons/reload.svg";
-
+import NetworkIcon from "../icons/network.svg";
 import LightIcon from "../icons/light.svg";
 import DarkIcon from "../icons/dark.svg";
 import AutoIcon from "../icons/auto.svg";
@@ -51,7 +57,7 @@ import { IconButton } from "./button";
 import styles from "./home.module.scss";
 import chatStyle from "./chat.module.scss";
 
-import { ListItem, Modal, showModal } from "./ui-lib";
+import { ListItem, Modal, showModal, showToast } from "./ui-lib";
 import { useLocation, useNavigate } from "react-router-dom";
 import { LAST_INPUT_KEY, Path } from "../constant";
 import { Avatar } from "./emoji";
@@ -319,9 +325,11 @@ export function ChatActions(props: {
 }) {
   const config = useAppConfig();
   const navigate = useNavigate();
-
+  const chatStore = useChatStore();
+  const session = chatStore.currentSession();
   // switch themes
   const theme = config.theme;
+
   function nextTheme() {
     const themes = [Theme.Auto, Theme.Light, Theme.Dark];
     const themeIndex = themes.indexOf(theme);
@@ -388,6 +396,26 @@ export function ChatActions(props: {
         }}
       >
         <MaskIcon />
+      </div>
+      <div
+        className={`${
+          session.needSearch
+            ? chatStyle["chat-input-action-selected"]
+            : chatStyle["chat-input-action"]
+        } clickable`}
+        onClick={() => {
+          chatStore.updateCurrentSession((session) => {
+            session.needSearch = !session.needSearch;
+            session.mask.modelConfig.sendMemory = !session.needSearch;
+          });
+          showToast(
+            session.needSearch
+              ? Locale.Chat.Config.EnableSearch
+              : Locale.Chat.Config.CloseSearch,
+          );
+        }}
+      >
+        <NetworkIcon />
       </div>
     </div>
   );
