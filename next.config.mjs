@@ -14,11 +14,11 @@ const nextConfig = {
       use: ["@svgr/webpack"],
     });
 
-    if (disableChunk) {
-      config.plugins.push(
-        new webpack.optimize.LimitChunkCountPlugin({ maxChunks: 1 }),
-      );
-    }
+    // if (disableChunk) {
+    //   config.plugins.push(
+    //     new webpack.optimize.LimitChunkCountPlugin({ maxChunks: 1 }),
+    //   );
+    // }
 
     config.resolve.fallback = {
       child_process: false,
