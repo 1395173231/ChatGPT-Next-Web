@@ -240,7 +240,7 @@ export const useAccessStore = createPersistStore(
             DEFAULT_CONFIG.modelConfig.providerName = providerName as any;
           }
           if ((res as any).openaiUrl) {
-            const apis = [(res as any).openaiUrl, ...res.historyUrl];
+            const apis =getClientConfig()?.buildMode === "export"? [OPENAI_BASE_URL]: [(res as any).openaiUrl, ...res.historyUrl];
             if (getClientConfig()?.buildMode != "export") {
               apis.push("/api/openai");
             }
@@ -273,15 +273,18 @@ export const useAccessStore = createPersistStore(
                     }
                   });
                 }
+                set(()=>({openaiUrl:(item.response?.url || item.input).replace(
+                    "/api/health",
+                    "/api/openai",
+                  )}))
               } catch (e) {}
-              set(()=>({openaiUrl:(item.response?.url || item.input).replace(
-                  "/api/health",
-                  "/api/openai",
-                )}))
             });
           }
           delete res["openaiUrl"];
-
+          delete res["historyUrl"];
+          delete res["supabaseUrls"];
+          delete res["botHello"];
+          delete res["notice"];
           return res;
         })
         .then((res: DangerConfig) => {
