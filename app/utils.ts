@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { showToast } from "./components/ui-lib";
 import Locale from "./locales";
 import { RequestMessage } from "./client/api";
-import { ServiceProvider } from "./constant";
+import { ServiceProvider, WATERMARK } from "./constant";
 // import { fetch as tauriFetch, ResponseType } from "@tauri-apps/api/http";
 import { fetch as tauriStreamFetch } from "./utils/stream";
 
@@ -18,7 +18,55 @@ export function trimTopic(topic: string) {
   );
 }
 
+export async function fetchWithTimeout(
+  input: RequestInfo,
+  init?: RequestInit,
+  timeout: number = 3000
+): Promise<any> {
+  const controller = new AbortController();
+  const id = setTimeout(() => controller.abort(), timeout);
+  const startTime = Date.now();
+
+  try {
+    const response = await window.fetch(input, {
+      ...init,
+      signal: controller.signal
+    });
+
+    clearTimeout(id);
+
+    return {
+      response:response,
+      ok: response.status === 200,
+      status: response.status,
+      input,
+      duration: Date.now() - startTime,
+    };
+  } catch (error) {
+    clearTimeout(id);
+
+    if (error instanceof DOMException && error.name === "AbortError") {
+      return {
+        ok: false,
+        status: -1,
+        duration: -1,
+        input,
+        error: "Request timed out"
+      };
+    }
+
+    return {
+      ok: false,
+      status: -1,
+      duration: -1,
+      input,
+      error: error instanceof Error ? error.message : String(error)
+    };
+  }
+}
+
 export async function copyToClipboard(text: string) {
+  text = text.replace(WATERMARK, "");
   try {
     if (window.__TAURI__) {
       window.__TAURI__.writeText(text);

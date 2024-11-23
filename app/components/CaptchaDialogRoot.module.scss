@@ -1,0 +1,111 @@
+/* 基础样式 - 使用动态 CSS 变量 */
+.captcha-dialog {
+  width: var(--window-width);
+  max-width: 500px;
+  border: none;
+  border-radius: 8px;
+  padding: 0;
+  background: var(--theme-color); /* 根据主题动态切换 */
+  color: var(--black); /* 动态文本颜色 */
+  box-shadow: var(--card-shadow);
+  position: relative;
+  text-align: left;
+  animation: showModal 0.3s ease-out;
+}
+
+.captcha-dialog::backdrop {
+  background: var(--bar-color);
+  animation: fadeIn 0.3s ease-out;
+}
+
+/* 内容区域 */
+.captcha-dialog-content {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  overflow: hidden;
+  border-radius: 8px;
+}
+
+/* 标题 */
+.captcha-dialog-title {
+  padding: 16px;
+  font-size: 16px;
+  font-weight: bold;
+  color: var(--primary);
+  border-bottom: var(--border-in-light);
+  background: var(--white);
+}
+
+/* 主体内容 */
+.captcha-dialog-body {
+  padding: 16px;
+  font-size: 14px;
+  background: var(--gray);
+  color: var(--black);
+}
+
+/* 底部区域 */
+.captcha-dialog-footer {
+  display: flex;
+  justify-content: flex-end;
+  padding: 16px;
+  border-top: var(--border-in-light);
+  background: var(--white);
+}
+
+/* 关闭按钮 */
+.captcha-dialog-close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  border: none;
+  background: none;
+  font-size: 18px;
+  color: var(--black);
+  cursor: pointer;
+}
+
+.captcha-dialog-close:hover {
+  color: var(--primary);
+}
+
+/* 移动端适配 */
+@media only screen and (max-width: 600px) {
+  .captcha-dialog {
+    width: var(--window-width);
+    height: auto;
+    max-width: none;
+    padding: 0;
+  }
+
+  .captcha-dialog-title,
+  .captcha-dialog-footer {
+    padding: 12px;
+  }
+
+  .captcha-dialog-body {
+    padding: 12px;
+  }
+}
+
+/* 动画效果 */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes showModal {
+  from {
+    transform: translateY(-50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}

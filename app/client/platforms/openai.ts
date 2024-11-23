@@ -8,6 +8,7 @@ import {
   Azure,
   REQUEST_TIMEOUT_MS,
   ServiceProvider,
+  WATERMARK,
 } from "@/app/constant";
 import {
   ChatMessageTool,
@@ -183,6 +184,19 @@ export class ChatGPTApi implements LLMApi {
   }
 
   async chat(options: ChatOptions) {
+    options.messages = options.messages.map((v) => {
+      if (typeof v.content === "string") {
+        v.content = v.content.replace(WATERMARK, "");
+      } else {
+        v.content = v.content.map((m) => {
+          if (m.type == "text") {
+            m.text = m.text?.replace(WATERMARK, "");
+          }
+          return m;
+        });
+      }
+      return v;
+    });
     const modelConfig = {
       ...useAppConfig.getState().modelConfig,
       ...useChatStore.getState().currentSession().mask.modelConfig,
@@ -242,6 +256,11 @@ export class ChatGPTApi implements LLMApi {
       // add max_tokens to vision model
       if (visionModel) {
         requestPayload["max_tokens"] = Math.max(modelConfig.max_tokens, 4000);
+      }
+
+      const captchaToken = useChatStore.getState().captchaToken;
+      if (captchaToken != "") {
+        (requestPayload as any).captchaToken = captchaToken;
       }
     }
 
@@ -366,6 +385,15 @@ export class ChatGPTApi implements LLMApi {
         clearTimeout(requestTimeoutId);
 
         const resJson = await res.json();
+        switch (resJson["callback"]) {
+          case "CLEAR-CAPTCHA-TOKEN":
+            console.log("[Request] clear captcha token");
+            useChatStore.getState().setCaptchaToken("");
+            useAccessStore.getState().showCaptcha(true);
+            break;
+          default:
+            break;
+        }
         const message = await this.extractMessage(resJson);
         options.onFinish(message, res);
       }
@@ -374,6 +402,7 @@ export class ChatGPTApi implements LLMApi {
       options.onError?.(e as Error);
     }
   }
+
   async usage() {
     const formatDate = (d: Date) =>
       `${d.getFullYear()}-${(d.getMonth() + 1).toString().padStart(2, "0")}-${d
@@ -477,4 +506,5 @@ export class ChatGPTApi implements LLMApi {
     }));
   }
 }
+
 export { OpenaiPath };

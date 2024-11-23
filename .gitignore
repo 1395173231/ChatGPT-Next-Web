@@ -44,5 +44,8 @@ dev
 
 *.key
 *.key.pub
-
+.yarn
 masks.json
+start.ps1
+out_static
+out

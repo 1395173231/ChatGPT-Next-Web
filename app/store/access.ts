@@ -14,7 +14,7 @@ import {
   STABILITY_BASE_URL,
   IFLYTEK_BASE_URL,
   XAI_BASE_URL,
-  CHATGLM_BASE_URL,
+  CHATGLM_BASE_URL, DEFAULT_API_HOST,
 } from "../constant";
 import { getHeaders } from "../client/api";
 import { getClientConfig } from "../config/client";
@@ -22,6 +22,7 @@ import { createPersistStore } from "../utils/store";
 import { ensure } from "../utils/clone";
 import { DEFAULT_CONFIG } from "./config";
 import { getModelProvider } from "../utils/model";
+import { fetchWithTimeout } from "@/app/utils";
 
 let fetchState = 0; // 0 not fetch, 1 fetching, 2 done
 
@@ -122,9 +123,10 @@ const DEFAULT_ACCESS_STATE = {
   hideBalanceQuery: false,
   disableGPT4: false,
   disableFastLink: false,
+  isShowCaptcha: false,
   customModels: "",
   defaultModel: "",
-
+  captchaType : "hcaptcha" as "hcaptcha" | "procaptcha" | "altcha",
   // tts config
   edgeTTSVoiceName: "zh-CN-YunxiNeural",
 };
@@ -133,6 +135,12 @@ export const useAccessStore = createPersistStore(
   { ...DEFAULT_ACCESS_STATE },
 
   (set, get) => ({
+    showCaptcha(isShowCaptcha: boolean) {
+      set({ isShowCaptcha: isShowCaptcha });
+    },
+    updateCaptchaType(captchaType: "hcaptcha" | "procaptcha" | "altcha") {
+      set(() => ({ captchaType }));
+    },
     enabledAccessControl() {
       this.fetch();
 
@@ -214,9 +222,9 @@ export const useAccessStore = createPersistStore(
       );
     },
     fetch() {
-      if (fetchState > 0 || getClientConfig()?.buildMode === "export") return;
+      if (fetchState > 0 ) return;
       fetchState = 1;
-      fetch("/api/config", {
+      fetch(getClientConfig()?.buildMode === "export"? `${DEFAULT_API_HOST}/api/config` :"/api/config", {
         method: "post",
         body: null,
         headers: {
@@ -231,6 +239,48 @@ export const useAccessStore = createPersistStore(
             DEFAULT_CONFIG.modelConfig.model = model;
             DEFAULT_CONFIG.modelConfig.providerName = providerName as any;
           }
+          if ((res as any).openaiUrl) {
+            const apis = [(res as any).openaiUrl, ...res.historyUrl];
+            if (getClientConfig()?.buildMode != "export") {
+              apis.push("/api/openai");
+            }
+            const fetchPromises = apis.map((item) => {
+              return fetchWithTimeout(
+                `${item.replace("/api/openai", "")}/api/health`,
+              );
+            });
+            Promise.all(fetchPromises).then((results) => {
+              let item = results
+                .filter((a) => {
+                  return a.ok && !!a.response;
+                })
+                .reduce((prev, curr) => {
+                  return prev.duration < curr.duration && prev.duration != -1
+                    ? prev
+                    : curr;
+                });
+              try {
+                if(item.response?.headers?.get("content-type") == "application/json"){
+                  item?.response?.json().then(({ captcha }: any) => {
+                    if (new Set(captcha).has("altcha")) {
+                      this.updateCaptchaType("altcha")
+                    } else if (new Set(captcha).has("procaptcha")) {
+                      this.updateCaptchaType("procaptcha" );
+                    } else if (new Set(captcha).has("hcaptcha")) {
+                      this.updateCaptchaType("hcaptcha" );
+                    } else {
+                      this.updateCaptchaType("hcaptcha" );
+                    }
+                  });
+                }
+              } catch (e) {}
+              set(()=>({openaiUrl:(item.response?.url || item.input).replace(
+                  "/api/health",
+                  "/api/openai",
+                )}))
+            });
+          }
+          delete res["openaiUrl"];
 
           return res;
         })

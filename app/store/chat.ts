@@ -192,6 +192,7 @@ function fillTemplateWith(input: string, modelConfig: ModelConfig) {
 const DEFAULT_CHAT_STATE = {
   sessions: [createEmptySession()],
   currentSessionIndex: 0,
+  captchaToken: "",
   lastInput: "",
 };
 
@@ -206,6 +207,11 @@ export const useChatStore = createPersistStore(
     }
 
     const methods = {
+      setCaptchaToken: (captchaToken: string) => {
+        set(() => ({
+          captchaToken: captchaToken,
+        }));
+      },
       forkSession() {
         // 获取当前会话
         const currentSession = get().currentSession();
@@ -396,6 +402,7 @@ export const useChatStore = createPersistStore(
 
         // get recent messages
         const recentMessages = get().getMessagesWithMemory();
+        console.log(recentMessages)
         const sendMessages = recentMessages.concat(userMessage);
         const messageIndex = session.messages.length + 1;
 

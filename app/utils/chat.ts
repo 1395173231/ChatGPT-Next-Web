@@ -11,6 +11,7 @@ import {
 } from "@fortaine/fetch-event-source";
 import { prettyObject } from "./format";
 import { fetch as tauriFetch } from "./stream";
+import { useAccessStore, useChatStore } from "@/app/store";
 
 export function compressImage(file: Blob, maxSize: number): Promise<string> {
   return new Promise((resolve, reject) => {
@@ -323,6 +324,15 @@ export function stream(
           let extraInfo = await res.clone().text();
           try {
             const resJson = await res.clone().json();
+            switch (resJson["callback"]) {
+              case "CLEAR-CAPTCHA-TOKEN":
+                console.log("[Request] clear captcha token");
+                useChatStore.getState().setCaptchaToken("");
+                useAccessStore.getState().showCaptcha(true);
+                break;
+              default:
+                break;
+            }
             extraInfo = prettyObject(resJson);
           } catch {}
 
@@ -340,6 +350,50 @@ export function stream(
         }
       },
       onmessage(msg) {
+        if (msg.event === "[CALLBACK]") {
+          switch (msg.data) {
+            case "CLEAR-CAPTCHA-TOKEN":
+              useChatStore.getState().setCaptchaToken("");
+              useAccessStore.getState().showCaptcha(true);
+              break;
+            default:
+              break;
+          }
+        }
+        if (msg.event === "[JSON]") {
+          // responseText = msg.data;
+          // console.log(responseText)
+          let data:any = msg.data;
+          try {
+            data = JSON.parse(msg.data)
+            let content = data?.choices?.[0]?.message?.content
+            if (content) {
+              responseText = content
+              return
+            }
+
+            responseText = ["```json\n", JSON.stringify(data, null, 2), "\n```"].join(
+              "",
+            )
+          } catch (e) {
+            console.error(e)
+            options.onError?.(new Error(JSON.stringify(msg.data, null, 2)));
+            finished = true;
+          }
+          return;
+        }
+
+        if (msg.event === "[ADD]") {
+          responseText += msg.data;
+          options.onUpdate?.(responseText, msg.data);
+          return;
+        }
+
+        if (msg.event === "[ORIGIN]") {
+          responseText = msg.data;
+          options.onUpdate?.(responseText, msg.data);
+          return;
+        }
         if (msg.data === "[DONE]" || finished) {
           return finish();
         }

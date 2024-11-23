@@ -123,6 +123,8 @@ import { isEmpty } from "lodash-es";
 import { getModelProvider } from "../utils/model";
 import { RealtimeChat } from "@/app/components/realtime-chat";
 import clsx from "clsx";
+import { CaptchaDialogRoot } from "@/app/components/CaptchaDialogRoot";
+import { State } from "@/app/components/altcaptcha/types";
 
 const localStorage = safeLocalStorage();
 
@@ -130,6 +132,16 @@ const ttsPlayer = createTTSPlayer();
 
 const Markdown = dynamic(async () => (await import("./markdown")).Markdown, {
   loading: () => <LoadingIcon />,
+});
+
+const HCaptcha = dynamic(async () => (await import("./hcaptcha")), {
+  loading: () => <LoadingIcon />
+});
+const ProCaptcha = dynamic(async () => (await import("./procaptcha/procaptcha")), {
+  loading: () => <LoadingIcon />
+});
+const Altcha = dynamic(async () => (await import("./altcaptcha/altcha")).Altcha, {
+  loading: () => <LoadingIcon />
 });
 
 export function SessionConfigModel(props: { onClose: () => void }) {
@@ -201,6 +213,36 @@ export function SessionConfigModel(props: { onClose: () => void }) {
 }
 
 function PromptToast(props: {
+  showToast?: boolean;
+  showModal?: boolean;
+  setShowModal: (_: boolean) => void;
+}) {
+  const chatStore = useChatStore();
+  const session = chatStore.currentSession();
+  const context = session.mask.context;
+
+  return (
+    <div className={styles["prompt-toast"]} key="prompt-toast">
+      {props.showToast && context.length > 0 && (
+        <div
+          className={clsx(styles["prompt-toast-inner"], "clickable")}
+          role="button"
+          onClick={() => props.setShowModal(true)}
+        >
+          <BrainIcon />
+          <span className={styles["prompt-toast-content"]}>
+            {Locale.Context.Toast(context.length)}
+          </span>
+        </div>
+      )}
+      {props.showModal && (
+        <SessionConfigModel onClose={() => props.setShowModal(false)} />
+      )}
+    </div>
+  );
+}
+
+function CaptchaToast(props: {
   showToast?: boolean;
   showModal?: boolean;
   setShowModal: (_: boolean) => void;
@@ -984,6 +1026,7 @@ function _Chat() {
   const navigate = useNavigate();
   const [attachImages, setAttachImages] = useState<string[]>([]);
   const [uploading, setUploading] = useState(false);
+  const [captchaCallback, setCaptchaCallback] = useState<Function>(() => {});
 
   // prompt hints
   const promptStore = usePromptStore();
@@ -1053,7 +1096,7 @@ function _Chat() {
     }
   };
 
-  const doSubmit = (userInput: string) => {
+  const doSubmitHandler = useCallback((userInput: string) => {
     if (userInput.trim() === "" && isEmpty(attachImages)) return;
     const matchCommand = chatCommands.match(userInput);
     if (matchCommand.matched) {
@@ -1072,7 +1115,14 @@ function _Chat() {
     setPromptHints([]);
     if (!isMobileScreen) inputRef.current?.focus();
     setAutoScroll(true);
-  };
+  },[attachImages, chatCommands, chatStore, isMobileScreen]);
+
+  const doSubmit = useCallback((userInput: string) => {
+    setCaptchaCallback(() => () => {
+      doSubmitHandler(userInput);
+    });
+    doSubmitHandler(userInput);
+  }, [doSubmitHandler]);
 
   const onPromptSelect = (prompt: RenderPrompt) => {
     setTimeout(() => {
@@ -1165,7 +1215,7 @@ function _Chat() {
     deleteMessage(msgId);
   };
 
-  const onResend = (message: ChatMessage) => {
+  const onResendHandler = useCallback((message: ChatMessage) => {
     // when it is resending a message
     // 1. for a user's message, find the next bot response
     // 2. for a bot's message, find the last user's input
@@ -1219,7 +1269,21 @@ function _Chat() {
     const images = getMessageImages(userMessage);
     chatStore.onUserInput(textContent, images).then(() => setIsLoading(false));
     inputRef.current?.focus();
-  };
+  },[session.messages, deleteMessage, chatStore]);
+
+  const onResend = useCallback((message: ChatMessage) => {
+    scrollToBottom();
+    setAutoScroll(true);
+    if (
+      (!chatStore.captchaToken || chatStore.captchaToken == "")
+    ) {
+      setCaptchaCallback(() => () => {
+        onResendHandler(message);
+      });
+    }
+    onResendHandler(message);
+  }, [chatStore.captchaToken, onResendHandler]);
+
 
   const onPinMessage = (message: ChatMessage) => {
     chatStore.updateTargetSession(session, (session) =>
@@ -1235,6 +1299,12 @@ function _Chat() {
   };
 
   const accessStore = useAccessStore();
+  useEffect(() => {
+    setCaptchaCallback(() => () => {
+      onResendHandler(renderMessages.at(-1) as ChatMessage);
+    });
+  }, [accessStore.isShowCaptcha, onResendHandler]);
+
   const [speechStatus, setSpeechStatus] = useState(false);
   const [speechLoading, setSpeechLoading] = useState(false);
   async function openaiSpeech(text: string) {
@@ -1610,6 +1680,8 @@ function _Chat() {
   }, [messages, chatStore, navigate]);
 
   const [showChatSidePanel, setShowChatSidePanel] = useState(false);
+  const { captchaType } = accessStore
+  const altchaRef = useRef<HTMLInputElement>(null);
 
   return (
     <>
@@ -2080,6 +2152,68 @@ function _Chat() {
       {showShortcutKeyModal && (
         <ShortcutKeyModal onClose={() => setShowShortcutKeyModal(false)} />
       )}
+      <CaptchaDialogRoot
+        title="请通过验证后使用"
+        open={accessStore.isShowCaptcha}
+        onOpenChange={(e) => {
+          accessStore.showCaptcha(e);
+        }}
+      >
+        <div>
+          {captchaType == "hcaptcha" && (
+            <HCaptcha
+              onVerify={(token) => {
+                chatStore.setCaptchaToken(token);
+                setTimeout(() => {
+                  accessStore.showCaptcha(false);
+                }, 500);
+                captchaCallback();
+              }}
+              onExpire={() => {
+                chatStore.setCaptchaToken("");
+              }}
+            />
+          )}
+
+          {captchaType == "procaptcha" && (
+            <ProCaptcha
+              onVerify={(token) => {
+                chatStore.setCaptchaToken(token);
+                setTimeout(() => {
+                  accessStore.showCaptcha(false);
+                }, 500);
+                captchaCallback();
+              }}
+              onExpire={() => {
+                chatStore.setCaptchaToken("");
+              }}
+            ></ProCaptcha>
+          )}
+          {captchaType == "altcha" && (
+            <Altcha
+              auto={"onload"}
+              challengeurl={`${accessStore.openaiUrl?.replace("/api/openai", "")}/api/altcaptcha/challenge`}
+              // workers={navigator.hardwareConcurrency || 8}
+              hidefooter={true}
+              onStateChange={(ev: Event | CustomEvent) => {
+                if ("detail" in ev) {
+                  if (
+                    ev.detail.state == State.VERIFIED &&
+                    !!ev?.detail?.payload
+                  ) {
+                    chatStore.setCaptchaToken(ev?.detail?.payload);
+                    setTimeout(() => {
+                      accessStore.showCaptcha(false);
+                    }, 500);
+                    captchaCallback();
+                  }
+                }
+              }}
+              ref={altchaRef}
+            />
+          )}
+        </div>
+      </CaptchaDialogRoot>
     </>
   );
 }
