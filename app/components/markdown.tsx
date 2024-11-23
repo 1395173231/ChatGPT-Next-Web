@@ -1,4 +1,3 @@
-import ReactMarkdown from "react-markdown";
 import "katex/dist/katex.min.css";
 import RemarkMath from "remark-math";
 import RemarkBreaks from "remark-breaks";
@@ -21,9 +20,15 @@ import {
 } from "./artifacts";
 import { useChatStore } from "../store";
 import { IconButton } from "./button";
-
+import { Pluggable } from "unified";
 import { useAppConfig } from "../store/config";
 import clsx from "clsx";
+import dynamic from "next/dynamic";
+
+const IncrementalMarkdown = dynamic(async () => (await import("./markdown-Increment")).IncrementalMarkdown, {
+  loading: () => <LoadingIcon />
+});
+
 
 export function Mermaid(props: { code: string }) {
   const ref = useRef<HTMLDivElement>(null);
@@ -71,7 +76,8 @@ export function Mermaid(props: { code: string }) {
   );
 }
 
-export function PreCode(props: { children: any }) {
+export function PreCode(props: any) {
+  const {children} = props;
   const ref = useRef<HTMLPreElement>(null);
   const previewRef = useRef<HTMLPreviewHander>(null);
   const [mermaidCode, setMermaidCode] = useState("");
@@ -173,7 +179,7 @@ export function PreCode(props: { children: any }) {
   );
 }
 
-function CustomCode(props: { children: any; className?: string }) {
+function CustomCode(props: any) {
   const chatStore = useChatStore();
   const session = chatStore.currentSession();
   const config = useAppConfig();
@@ -273,7 +279,7 @@ function _MarkDownContent(props: { content: string }) {
   }, [props.content]);
 
   return (
-    <ReactMarkdown
+    <IncrementalMarkdown
       remarkPlugins={[RemarkMath, RemarkGfm, RemarkBreaks]}
       rehypePlugins={[
         RehypeKatex,
@@ -283,8 +289,9 @@ function _MarkDownContent(props: { content: string }) {
             detect: false,
             ignoreMissing: true,
           },
-        ],
+        ] as unknown as Pluggable,
       ]}
+      // @ts-ignore
       components={{
         pre: PreCode,
         code: CustomCode,
@@ -312,7 +319,7 @@ function _MarkDownContent(props: { content: string }) {
       }}
     >
       {escapedContent}
-    </ReactMarkdown>
+    </IncrementalMarkdown>
   );
 }
 

@@ -1303,7 +1303,7 @@ function _Chat() {
     setCaptchaCallback(() => () => {
       onResendHandler(renderMessages.at(-1) as ChatMessage);
     });
-  }, [accessStore.isShowCaptcha, onResendHandler]);
+  }, [accessStore.isShowCaptcha]);
 
   const [speechStatus, setSpeechStatus] = useState(false);
   const [speechLoading, setSpeechLoading] = useState(false);
