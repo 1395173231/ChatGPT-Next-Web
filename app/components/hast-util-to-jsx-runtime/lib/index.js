@@ -26,8 +26,8 @@ const own = {}.hasOwnProperty
 /** @type {Map<string, number>} */
 const emptyMap = new Map()
 
-const cap = /[A-Z]/g
-const dashSomething = /-([a-z])/g
+const cap = new RegExp('[A-Z]', 'g');
+const dashSomething = new RegExp('-([a-z])', 'g')
 
 // `react-dom` triggers a warning for *any* white space in tables.
 // To follow GFM, `mdast-util-to-hast` injects line endings between elements.

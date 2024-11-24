@@ -37,7 +37,7 @@ const emptyPlugins: PluggableList = []
 const emptyRemarkRehypeOptions: Readonly<RemarkRehypeOptions> = {
     allowDangerousHtml: true
 }
-const safeProtocol = /^(https?|ircs?|mailto|xmpp)$/i
+const safeProtocol = new RegExp('^(https?|ircs?|mailto|xmpp)$', 'i');
 
 type Components = {
     [TagName in keyof JSX.IntrinsicElements]:

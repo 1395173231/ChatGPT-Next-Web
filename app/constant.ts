@@ -36,7 +36,7 @@ export const CACHE_URL_PREFIX = "/api/cache";
 export const UPLOAD_URL = `${CACHE_URL_PREFIX}/upload`;
 export const DEFAULT_API_HOST = "https://nginx-rproxy-sf-mxzhggtqbt.cn-shenzhen.fcapp.run";
 export const DEFAULT_CORS_HOST = `https://cors-api.easygpt.work`;
-export const WATERMARK =  /\n\n> provided by \[.*?\]\(.*?\)[\s\S]*/
+export const WATERMARK =  new RegExp('\\n\\n> provided by \\[.*?\\]\\(.*?\\)[\\s\\S]*')
 export enum Path {
   Home = "/",
   Chat = "/chat",
