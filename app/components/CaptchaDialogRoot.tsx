@@ -16,42 +16,27 @@ export const CaptchaDialogRoot: React.FC<CaptchaProps> = ({
                                                             open,
                                                             onOpenChange
                                                           }) => {
-  const dialogRef = useRef<ElementRef<"dialog"> | ElementRef<"div">>(null);
-  const [isDialogSupported, setIsDialogSupported] = useState(true);
-
-  useEffect(() => {
-    // 检查浏览器是否支持 dialog 元素
-    setIsDialogSupported('show' in document.createElement('dialog'));
-  }, []);
+  const dialogRef = useRef<ElementRef<"div">>(null);
 
   useEffect(() => {
     if (!dialogRef.current) return;
 
     if (open) {
-      if (isDialogSupported) {
-        (dialogRef.current as HTMLDialogElement).showModal();
-      } else {
         // 回退方案：使用 div 模拟 dialog
         document.body.style.overflow = 'hidden';
         (dialogRef.current as HTMLDivElement).style.display = 'flex';
-      }
     } else {
-      if (isDialogSupported) {
-        (dialogRef.current as HTMLDialogElement).close();
-      } else {
         document.body.style.overflow = '';
         (dialogRef.current as HTMLDivElement).style.display = 'none';
-      }
     }
-  }, [open, isDialogSupported]);
+  }, [open]);
 
-  const DialogComponent = isDialogSupported ? 'dialog' : 'div';
+  // const DialogComponent =  'div';
 
   const content = (
-    <DialogComponent
+    <div
       ref={dialogRef as any}
-      className={`${styles["captcha-dialog"]} ${!isDialogSupported ? styles["captcha-dialog-fallback"] : ''}`}
-      onClose={() => isDialogSupported && onOpenChange(false)}
+      className={`${styles["captcha-dialog"]} ${ styles["captcha-dialog-fallback"]}`}
     >
       <div className={styles["captcha-dialog-content"]}>
         <div className={styles["captcha-dialog-title"]}>
@@ -70,12 +55,10 @@ export const CaptchaDialogRoot: React.FC<CaptchaProps> = ({
       >
         ×
       </button>
-    </DialogComponent>
+    </div>
   );
 
-  return isDialogSupported ? (
-    content
-  ) : (
+  return (
     <div className={styles["modal-overlay"]} style={{ display: open ? 'flex' : 'none' }}>
       {content}
     </div>
