@@ -8,10 +8,10 @@ import remarkRehype from 'remark-rehype'
 import { unified } from 'unified'
 import { visit } from 'unist-util-visit'
 import { VFile } from 'vfile'
-import type { Element, ElementContent, Nodes, Parents } from 'hast'
+import type { Element, ElementContent, Nodes } from 'hast'
 import type { Options as RemarkRehypeOptions } from 'remark-rehype'
 import type { PluggableList } from 'unified'
-import {ReactElement, ReactNode, useEffect, useRef, useState} from 'react'
+import {ReactElement, useEffect, useRef} from 'react'
 import {AllowElement, UrlTransform } from "react-markdown";
 import {Component, ExtraProps} from "./hast-util-to-jsx-runtime/lib/components";
 import {LRUMap} from "lru_map";

@@ -8,12 +8,54 @@
   background: var(--theme-color); /* 根据主题动态切换 */
   color: var(--black); /* 动态文本颜色 */
   box-shadow: var(--card-shadow);
-  position: relative;
-  text-align: left;
-  animation: showModal 0.3s ease-out;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  margin: 0;
+
+  // 原生 dialog 的动画
+  &:not(.captcha-dialog-fallback) {
+    animation: showModal 0.3s ease-out;
+  }
 }
 
-.captcha-dialog::backdrop {
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.captcha-dialog-fallback {
+  position: relative;
+  top: auto;
+  left: auto;
+  transform: none;
+  animation: showModalFallback 0.3s ease-out;
+}
+
+
+
+@keyframes showModalFallback {
+  from {
+    transform: translateY(-50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+
+.captcha-dialog-fallback::backdrop {
   background: var(--bar-color);
   animation: fadeIn 0.3s ease-out;
 }
@@ -99,13 +141,14 @@
   }
 }
 
+// 修改原生 dialog 的动画
 @keyframes showModal {
   from {
-    transform: translateY(-50px);
     opacity: 0;
+    transform: translate(-50%, calc(-50% - 30px));
   }
   to {
-    transform: translateY(0);
     opacity: 1;
+    transform: translate(-50%, -50%);
   }
 }
