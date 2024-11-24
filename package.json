@@ -107,7 +107,8 @@
     "webpack": "^5.88.1"
   },
   "resolutions": {
-    "lint-staged/yaml": "^2.2.2"
+    "lint-staged/yaml": "^2.2.2",
+    "mdast-util-gfm-autolink-literal": "2.0.0"
   },
   "packageManager": "yarn@4.5.2"
 }
