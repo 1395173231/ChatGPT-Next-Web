@@ -9,8 +9,6 @@ interface CaptchaProps {
   onOpenChange: (open: boolean) => void;
 }
 
-
-
 export const CaptchaDialogRoot: React.FC<CaptchaProps> = ({
                                                             children,
                                                             title,

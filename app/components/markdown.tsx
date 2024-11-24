@@ -6,7 +6,6 @@ import RemarkGfm from "remark-gfm";
 import RehypeHighlight from "rehype-highlight";
 import { useRef, useState, RefObject, useEffect, useMemo } from "react";
 import { copyToClipboard, useWindowSize } from "../utils";
-import mermaid from "mermaid";
 import Locale from "../locales";
 import LoadingIcon from "../icons/three-dots.svg";
 import ReloadButtonIcon from "../icons/reload.svg";
@@ -35,19 +34,25 @@ export function Mermaid(props: { code: string }) {
   const [hasError, setHasError] = useState(false);
 
   useEffect(() => {
-    if (props.code && ref.current) {
-      mermaid
-        .run({
+    if (!props.code || !ref.current) return;  // 提前返回优化
+
+    // 使用 async/await 使代码更清晰
+    const initMermaid = async () => {
+      try {
+        const { default: mermaid } = await import("mermaid");
+        if (!props.code || !ref.current) return;
+        await mermaid.run({
           nodes: [ref.current],
           suppressErrors: true,
-        })
-        .catch((e) => {
-          setHasError(true);
-          console.error("[Mermaid] ", e.message);
         });
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [props.code]);
+      } catch (e) {
+        setHasError(true);
+        console.error("[Mermaid] ", e instanceof Error ? e.message : e);
+      }
+    };
+
+    initMermaid();
+  }, [props.code]);  // 依赖项更简洁
 
   function viewSvgInNewWindow() {
     const svg = ref.current?.querySelector("svg");
@@ -317,6 +322,7 @@ function _MarkDownContent(props: { content: string }) {
           return <a {...aProps} target={target} />;
         },
       }}
+      enabledCache={true}
     >
       {escapedContent}
     </IncrementalMarkdown>
