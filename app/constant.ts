@@ -304,6 +304,7 @@ const openaiModels = [
   "gpt-4o-mini",
   "gpt-4o-free",
   "cursor-gpt-4-turbo-2024-04-09-free",
+  "cursor-gpt-4o-free",
   "cursor-o1-mini-free",
   "cursor-o1-preview-free",
   "cursor-claude-3.5-sonnet-free",
